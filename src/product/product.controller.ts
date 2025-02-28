@@ -12,7 +12,9 @@ router.get("/product", async (req: Request, res: Response) => {
 
 router.get("/product/:name", async (req: Request, res: Response) => {
   try {
-    const product = await productService.getProductByName(req.params.name);
+    const product = await productService.getProductByName({
+      name: req.params.name,
+    });
     res.status(200).json(product);
   } catch (error) {
     res.status(400).json({ message: "Product not found!" });

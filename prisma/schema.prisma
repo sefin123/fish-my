@@ -10,5 +10,13 @@ datasource db {
 model Product {
   id Int @id @default(autoincrement())
   name String @unique
-  price Int
+  price Float
+  categoryId Int?
+  category Category? @relation(fields: [categoryId], references: [id])
+}
+
+model Category {
+  id Int @id @default(autoincrement())
+  name String @unique
+  product Product[]
 }

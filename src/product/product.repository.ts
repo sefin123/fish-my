@@ -1,4 +1,10 @@
 import { PrismaClient, Product } from "@prisma/client";
+import {
+  DeleteProduct,
+  GetProduct,
+  PostProduct,
+  PutProduct,
+} from "./product.types";
 
 const prisma = new PrismaClient();
 
@@ -7,33 +13,38 @@ export class ProductRepository {
     return prisma.product.findMany();
   }
 
-  getProductByName(name: string): Promise<Product | null> {
+  getProductByName(product: GetProduct): Promise<Product | null> {
     return prisma.product.findFirst({
       where: {
-        name,
+        name: product.name,
       },
     });
   }
 
-  createProduct(product: Product): Promise<Product> {
+  createProduct(product: PostProduct): Promise<Product> {
     return prisma.product.create({
-      data: product,
+      data: {
+        name: product.name,
+        price: product.price,
+        category: {
+          connect: { name: product.category },
+        },
+      },
     });
   }
 
-  updateProductPrice(product: Product): Promise<Product | null> {
+  updateProductPrice(product: PutProduct): Promise<Product | null> {
     return prisma.product.update({
       where: {
         name: product.name,
       },
       data: {
-        name: product.name,
-        price: product.price,
+        price: product.newPrice,
       },
     });
   }
 
-  deleteProduct(product: Product): Promise<Product> {
+  deleteProduct(product: DeleteProduct): Promise<Product> {
     return prisma.product.delete({
       where: {
         name: product.name,
