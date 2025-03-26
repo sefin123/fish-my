@@ -13,10 +13,38 @@ model Product {
   price Float
   categoryId Int?
   category Category? @relation(fields: [categoryId], references: [id])
+  cartItems CartItem[]
 }
 
 model Category {
   id Int @id @default(autoincrement())
   name String @unique
   product Product[]
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  email String @unique
+  name String @unique
+  password String
+  cart Cart?
+}
+
+model Cart {
+  id Int @id @default(autoincrement())
+  userId Int @unique
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cartItems CartItem[]
+}
+
+model CartItem {
+  id Int @id @default(autoincrement())
+
+  cartId Int
+  productId Int
+
+  cart Cart @relation(fields: [cartId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+
+  @@unique([cartId, productId])
 }

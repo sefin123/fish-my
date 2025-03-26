@@ -6,7 +6,6 @@ import {
   PostCategory,
   PutCategory,
 } from "./category.types";
-import { createDecipheriv } from "crypto";
 
 const prisma = new PrismaClient();
 

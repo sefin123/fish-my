@@ -1,11 +1,11 @@
-import { Request, Response, Router } from "express";
+import { NextFunction, Request, Response, Router } from "express";
 import { ProductService } from "./product.service";
 
 const router = Router();
 
 const productService = new ProductService();
 
-router.get("/product", async (req: Request, res: Response) => {
+router.get("/products", async (req: Request, res: Response) => {
   const products = await productService.getProducts();
   res.status(200).json(products);
 });
